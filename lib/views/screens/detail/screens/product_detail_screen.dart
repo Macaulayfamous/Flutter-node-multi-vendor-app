@@ -92,8 +92,102 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.product.productName,
+                  style: GoogleFonts.roboto(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                    color: const Color(
+                      0xFF3C55Ef,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$${widget.product.productPrice}",
+                  style: GoogleFonts.roboto(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(
+                      0xFF3C55Ef,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.product.category,
+              style: GoogleFonts.roboto(
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "About",
+                  style: GoogleFonts.lato(
+                    fontSize: 17,
+                    letterSpacing: 1.7,
+                    color: const Color(
+                      0xFF363330,
+                    ),
+                  ),
+                ),
+                Text(
+                  widget.product.description,
+                  style: GoogleFonts.mochiyPopOne(
+                    letterSpacing: 2,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
           )
         ],
+      ),
+      bottomSheet: Padding(
+        padding: EdgeInsets.all(8),
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            width: 386,
+            height: 46,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: const Color(
+                0xFF3B54EE,
+              ),
+              borderRadius: BorderRadius.circular(
+                15,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                "ADD TO CART ",
+                style: GoogleFonts.mochiyPopOne(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
