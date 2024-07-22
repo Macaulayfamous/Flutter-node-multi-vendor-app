@@ -2,10 +2,10 @@ class Cart {
   final String productName;
   final int productPrice;
   final String category;
-  final List image;
+  final List<String> image;
   final String vendorId;
   final int productQuantity;
-  final int quantity;
+   int quantity;
   final String productId;
   final String description;
   final String fullName;
