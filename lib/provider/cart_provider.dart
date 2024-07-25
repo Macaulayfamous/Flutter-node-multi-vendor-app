@@ -1,6 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mac_store_app/models/cart.dart';
 
+//Define a  StateNotifierProvider to expose an instance of the CartNofier
+//Making it accessible within our app
+final cartProvider =
+    StateNotifierProvider<CartNotifier, Map<String, Cart>>((ref) {
+  return CartNotifier();
+});
+
 //A notifier class to manage the cart state, extending stateNotifier
 //with an inital state of an empty map
 class CartNotifier extends StateNotifier<Map<String, Cart>> {
@@ -70,8 +77,24 @@ class CartNotifier extends StateNotifier<Map<String, Cart>> {
     if (state.containsKey(productId)) {
       state[productId]!.quantity--;
 
-      //Nofify listerners that the state has changed
+      //Notify listerners that the state has changed
       state = {...state};
     }
+  }
+
+  //Method to remove item from the cart
+  void removeCartItem(String productId) {
+    state.remove(productId);
+    //Notify Listerners that the state has changed
+  }
+
+  //Method to calculate total amount of items we have in cart
+  double calculateTotalAmount() {
+    double totalAmount = 0.0;
+    state.forEach((productId, cartItem) {
+      totalAmount += cartItem.quantity * cartItem.productPrice;
+    });
+
+    return totalAmount;
   }
 }
