@@ -6,7 +6,11 @@ import 'package:mac_store_app/views/screens/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {

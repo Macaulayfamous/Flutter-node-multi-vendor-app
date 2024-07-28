@@ -5,15 +5,17 @@ class UserProvider extends StateNotifier<User?> {
   // contructore initializing with default User Object
   //purpose: Mange the state of the user  object allowing updates
   UserProvider()
-      : super(User(
-            id: '',
-            fullName: '',
-            email: '',
-            state: '',
-            city: '',
-            locality: '',
-            password: '',
-            token: ''));
+      : super(
+          User(
+              id: '',
+              fullName: '',
+              email: '',
+              state: '',
+              city: '',
+              locality: '',
+              password: '',
+              token: ''),
+        );
 
   //Getter method to extract value from an object
 
@@ -33,5 +35,6 @@ class UserProvider extends StateNotifier<User?> {
 }
 
 //make the data accisible within the application
-final userProvider =
-    StateNotifierProvider<UserProvider, User?>((ref) => UserProvider());
+final userProvider = StateNotifierProvider<UserProvider, User?>(
+  (ref) => UserProvider(),
+);
