@@ -11,6 +11,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
+  String selectedPaymentMethod = 'stripe';
   @override
   Widget build(BuildContext context) {
     final cartData = ref.read(cartProvider);
@@ -299,8 +300,73 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                       );
                     }),
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Choose Payment Method',
+                style: GoogleFonts.montserrat(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              RadioListTile<String>(
+                title: Text(
+                  'Stripe',
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                value: 'stripe',
+                groupValue: selectedPaymentMethod,
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedPaymentMethod = value!;
+                  });
+                },
+              ),
+              RadioListTile<String>(
+                  title: Text(
+                    'Cash on Delivery',
+                    style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  value: 'cashOnDelivery',
+                  groupValue: selectedPaymentMethod,
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedPaymentMethod = value!;
+                    });
+                  })
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 338,
+          height: 58,
+          decoration: BoxDecoration(
+            color: const Color(
+              0xFF3854EE,
+            ),
+            borderRadius: BorderRadius.circular(
+              15,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              selectedPaymentMethod == 'stripe' ? 'Pay Now' : "Place Order",
+              style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
       ),
