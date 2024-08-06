@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mac_store_app/controllers/order_controller.dart';
 import 'package:mac_store_app/provider/cart_provider.dart';
 import 'package:mac_store_app/provider/user_provider.dart';
+import 'package:mac_store_app/views/screens/detail/screens/shipping_address_screen.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
@@ -19,6 +20,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget build(BuildContext context) {
     final cartData = ref.read(cartProvider);
     final _cartProvider = ref.read(cartProvider.notifier);
+    final user = ref.watch(userProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -35,7 +37,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ShippingAddressScreen();
+                  }));
+                },
                 child: SizedBox(
                   width: 335,
                   height: 74,
@@ -96,25 +102,45 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'United state',
-                                          style: GoogleFonts.lato(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.3,
-                                          ),
-                                        ),
+                                        child: user!.state.isNotEmpty
+                                            ? Text(
+                                                user.state,
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.3,
+                                                ),
+                                              )
+                                            : Text(
+                                                'United state',
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.3,
+                                                ),
+                                              ),
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'Enter city',
-                                          style: GoogleFonts.lato(
-                                            color: const Color(0xFF7F808C),
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12,
-                                          ),
-                                        ),
+                                        child: user.city.isNotEmpty
+                                            ? Text(
+                                                user.city,
+                                                style: GoogleFonts.lato(
+                                                  color:
+                                                      const Color(0xFF7F808C),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              )
+                                            : Text(
+                                                'Enter city',
+                                                style: GoogleFonts.lato(
+                                                  color:
+                                                      const Color(0xFF7F808C),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
                                       )
                                     ],
                                   ),
@@ -351,56 +377,78 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () async {
-            if (selectedPaymentMethod == 'stripe') {
-              //pay with stripe to place the order
-            } else {
-              await Future.forEach(_cartProvider.getCartItems.entries, (entry) {
-                var item = entry.value;
-                _orderController.uploadOrders(
-                    id: '',
-                    fullName: ref.read(userProvider)!.fullName,
-                    email: ref.read(userProvider)!.email,
-                    state: 'united states',
-                    city: 'states',
-                    locality: 'test states',
-                    productName: item.productName,
-                    productPrice: item.productPrice,
-                    quantity: item.quantity,
-                    category: item.category,
-                    image: item.image[0],
-                    buyerId: ref.read(userProvider)!.id,
-                    vendorId: item.vendorId,
-                    processing: true,
-                    delivered: false,
-                    context: context,);
-              });
-            }
-          },
-          child: Container(
-            width: 338,
-            height: 58,
-            decoration: BoxDecoration(
-              color: const Color(
-                0xFF3854EE,
-              ),
-              borderRadius: BorderRadius.circular(
-                15,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                selectedPaymentMethod == 'stripe' ? 'Pay Now' : "Place Order",
-                style: GoogleFonts.montserrat(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+        child: user.state.isEmpty
+            ? TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ShippingAddressScreen();
+                  }));
+                },
+                child: Text(
+                  'Please Enter Shipping Address',
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+              )
+            : InkWell(
+                onTap: () async {
+                  if (selectedPaymentMethod == 'stripe') {
+                    print(ref.watch(userProvider)!.state);
+
+                    //pay with stripe to place the order
+                  } else {
+                    print('mee');
+                    await Future.forEach(_cartProvider.getCartItems.entries,
+                        (entry) {
+                      var item = entry.value;
+                      _orderController.uploadOrders(
+                        id: '',
+                        fullName: ref.read(userProvider)!.fullName,
+                        email: ref.read(userProvider)!.email,
+                        state: 'united states',
+                        city: 'states',
+                        locality: 'test states',
+                        productName: item.productName,
+                        productPrice: item.productPrice,
+                        quantity: item.quantity,
+                        category: item.category,
+                        image: item.image[0],
+                        buyerId: ref.read(userProvider)!.id,
+                        vendorId: item.vendorId,
+                        processing: true,
+                        delivered: false,
+                        context: context,
+                      );
+                    });
+                  }
+                },
+                child: Container(
+                  width: 338,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    color: const Color(
+                      0xFF3854EE,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      15,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      selectedPaymentMethod == 'stripe'
+                          ? 'Pay Now'
+                          : "Place Order",
+                      style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
