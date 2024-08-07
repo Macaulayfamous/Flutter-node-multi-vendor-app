@@ -72,7 +72,7 @@ class _CategoryItemWidgetState extends State<CategoryItemWidget> {
                             ),
                             Text(
                               category.name,
-                              style: GoogleFonts.quicksand(
+                              style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),

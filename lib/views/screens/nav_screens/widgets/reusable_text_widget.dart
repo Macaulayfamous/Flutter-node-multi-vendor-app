@@ -17,14 +17,14 @@ class ReusableTextWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: GoogleFonts.quicksand(
+            style: GoogleFonts.montserrat(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             subtitle,
-            style: GoogleFonts.quicksand(
+            style: GoogleFonts.montserrat(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.blue,

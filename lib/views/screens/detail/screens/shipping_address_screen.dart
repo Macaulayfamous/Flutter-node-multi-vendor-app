@@ -14,9 +14,53 @@ class ShippingAddressScreen extends ConsumerStatefulWidget {
 class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = AuthController();
-  late String state;
-  late String city;
-  late String locality;
+  late TextEditingController _stateController;
+  late TextEditingController _cityController;
+  late TextEditingController _localityController;
+
+  @override
+  void initState() {
+    super.initState();
+    //Read the current user data from the provider
+    final user = ref.read(userProvider);
+
+    //Initialize the controllers with the current data if available
+    // if user data  is not available , initialize with an empty String
+    _stateController = TextEditingController(text: user?.state ?? "");
+     _cityController = TextEditingController(text: user?.city ?? "");
+      _localityController = TextEditingController(text: user?.locality ?? "");
+  }
+
+  //Show Loading Dialog
+  _showLoadingDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    'Updating...',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +96,8 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
                   ),
                 ),
                 TextFormField(
-                  onChanged: (value) {
-                    state = value;
-                  },
+                  controller: _stateController,
+                  
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "please enter state";
@@ -70,9 +113,7 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
                   height: 15,
                 ),
                 TextFormField(
-                  onChanged: (value) {
-                    city = value;
-                  },
+                  controller: _cityController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "please enter city";
@@ -88,9 +129,7 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
                   height: 15,
                 ),
                 TextFormField(
-                  onChanged: (value) {
-                    locality = value;
-                  },
+                  controller: _localityController,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "please enter Locality";
@@ -112,20 +151,24 @@ class _ShippingAddressScreenState extends ConsumerState<ShippingAddressScreen> {
         child: InkWell(
           onTap: () async {
             if (_formKey.currentState!.validate()) {
-              print('data');
+              _showLoadingDialog();
+
               await _authController
                   .updateUserLocation(
                 context: context,
                 id: user!.id,
-                state: state,
-                city: city,
-                locality: locality,
+                state: _stateController.text,
+                city: _cityController.text,
+                locality: _localityController.text,
               )
                   .whenComplete(() {
                 udpdateUser.recreateUserState(
-                    state: state, city: city, locality: locality);
-
+                    state: _stateController.text, city: _cityController.text, locality: _localityController.text);
                 Navigator.pop(context);
+
+                ///this will close the Dialog
+                Navigator.pop(
+                    context); // this will close the shipping screen meaning it will take us back to the formal which is the checkout
               });
             } else {
               print('Not valid');

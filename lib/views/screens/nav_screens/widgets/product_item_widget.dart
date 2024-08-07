@@ -63,7 +63,7 @@ class ProductItemWidget extends StatelessWidget {
             Text(
               product.productName,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.roboto(
+              style: GoogleFonts.montserrat(
                 fontSize: 14,
                 color: const Color(
                   0xFF212121,
@@ -76,12 +76,21 @@ class ProductItemWidget extends StatelessWidget {
             ),
             Text(
               product.category,
-              style: GoogleFonts.quicksand(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(
-                    0xff868D94,
-                  )),
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: const Color(
+                  0xff868D94,
+                ),
+              ),
+            ),
+            Text(
+              '\$${product.productPrice.toStringAsFixed(2)}',
+              style: GoogleFonts.montserrat(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.purple,
+              ),
             )
           ],
         ),
