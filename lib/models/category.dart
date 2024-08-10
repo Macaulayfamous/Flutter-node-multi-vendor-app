@@ -27,7 +27,4 @@ class Category {
       banner: map['banner'] as String,
     );
   }
-
-  
-
 }

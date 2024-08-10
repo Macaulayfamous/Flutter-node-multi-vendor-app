@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mac_store_app/models/user.dart';
 
 class UserProvider extends StateNotifier<User?> {
-  // contructore initializing with default User Object
-  //purpose: Mange the state of the user  object allowing updates
+  // contructor initializing with default User Object
+  //purpose: Mangae the state of the user  object allowing updates
   UserProvider()
       : super(
           User(

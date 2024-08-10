@@ -10,7 +10,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
-  _CheckoutScreenState createState() => _CheckoutScreenState();
+  ConsumerState<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {

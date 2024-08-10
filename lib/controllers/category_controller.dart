@@ -16,7 +16,7 @@ class CategoryController {
         },
       );
 
-      print(response.body); // Print response body to check its structure
+      // print(response.body); // Print response body to check its structure
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
