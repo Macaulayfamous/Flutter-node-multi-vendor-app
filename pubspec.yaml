@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.1
   flutter_riverpod: ^2.5.1
   shared_preferences: ^2.2.3
+  custom_rating_bar: ^3.0.0
 
   
   
