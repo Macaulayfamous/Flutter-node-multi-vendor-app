@@ -23,18 +23,14 @@ class SubcategoryController {
               .map((subcategory) => Subcategory.fromJson(subcategory))
               .toList();
         } else {
-          print("subcategories not found");
           return [];
         }
       } else if (response.statusCode == 404) {
-        print("subcategories not found");
         return [];
       } else {
-        print('failed to fetch subcategories');
         return [];
       }
     } catch (e) {
-      print('error fetching categories $e');
       return [];
     }
   }

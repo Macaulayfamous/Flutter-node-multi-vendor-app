@@ -28,6 +28,8 @@ class ProductController {
             .map((product) => Product.fromMap(product as Map<String, dynamic>))
             .toList();
         return products;
+      } else if (response.statusCode == 404) {
+        return [];
       } else {
         //if status code is not 200 , throw an execption   indicating failure to load the popular products
         throw Exception('Failed to load popular products');
@@ -55,6 +57,8 @@ class ProductController {
             .map((product) => Product.fromMap(product as Map<String, dynamic>))
             .toList();
         return products;
+      } else if (response.statusCode == 404) {
+        return [];
       } else {
         //if status code is not 200 , throw an execption   indicating failure to load the popular products
         throw Exception('Failed to load popular products');
@@ -83,6 +87,8 @@ class ProductController {
             .map((product) => Product.fromMap(product as Map<String, dynamic>))
             .toList();
         return relatedProducts;
+      } else if (response.statusCode == 404) {
+        return [];
       } else {
         //if status code is not 200 , throw an execption   indicating failure to load the popular products
         throw Exception('Failed to load related products');
@@ -110,6 +116,8 @@ class ProductController {
             .map((product) => Product.fromMap(product as Map<String, dynamic>))
             .toList();
         return topRatedProducts;
+      } else if (response.statusCode == 404) {
+        return [];
       } else {
         //if status code is not 200 , throw an execption   indicating failure to load the popular products
         throw Exception('Failed to load top Rated  products');

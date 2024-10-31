@@ -92,8 +92,10 @@ class OrderController {
             data.map((order) => Order.fromJson(order)).toList();
 
         return orders;
+      } else if (response.statusCode == 404) {
+        return [];
       }
-      {
+     else  {
         //throw an execption if the server responded with an error status code
         throw Exception("failed to load Orders");
       }
@@ -125,6 +127,20 @@ class OrderController {
           });
     } catch (e) {
       showSnackBar(context, e.toString());
+    }
+  }
+
+  //Method to count delivered orders
+  Future<int> getDeliveredOrderCount({required String buyerId}) async {
+    try {
+      //load all order
+      List<Order> orders = await loadOrders(buyerId: buyerId);
+      //Filter ony delivered orders
+      int deliveredCount = orders.where((order) => order.delivered).length;
+
+      return deliveredCount;
+    } catch (e) {
+      throw Exception("Error counting  Delivered Orders");
     }
   }
 }

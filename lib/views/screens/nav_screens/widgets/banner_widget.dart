@@ -31,23 +31,30 @@ class _BannerWidgetState extends ConsumerState<BannerWidget> {
   Widget build(BuildContext context) {
     final banners = ref.watch(bannerProvider);
     return Container(
-        width: MediaQuery.of(context).size.width,
-        height: 170,
-        decoration: BoxDecoration(
-          color: const Color(0xFFF7F7F7),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: PageView.builder(
-            itemCount: banners.length,
-            itemBuilder: (context, index) {
-              final banner = banners[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network(
-                  banner.image,
-                  fit: BoxFit.cover,
-                ),
-              );
-            }));
+      width: MediaQuery.of(context).size.width,
+      height: 170,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F7F7),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: PageView.builder(
+        itemCount: banners.length,
+        itemBuilder: (context, index) {
+          final banner = banners[index];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                10,
+              ),
+              child: Image.network(
+                banner.image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
