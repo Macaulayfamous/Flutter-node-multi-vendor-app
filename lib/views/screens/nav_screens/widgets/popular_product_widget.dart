@@ -13,11 +13,18 @@ class PopularProductWidget extends ConsumerStatefulWidget {
 }
 
 class _PopularProductWidgetState extends ConsumerState<PopularProductWidget> {
+  bool isLoading = true;
   @override
   void initState() {
-  
     super.initState();
-    _fetchProduct();
+    final products = ref.read(productProvider);
+    if (products.isEmpty) {
+      _fetchProduct();
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _fetchProduct() async {
@@ -27,6 +34,10 @@ class _PopularProductWidgetState extends ConsumerState<PopularProductWidget> {
       ref.read(productProvider.notifier).setProducts(products);
     } catch (e) {
       print("$e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -35,15 +46,22 @@ class _PopularProductWidgetState extends ConsumerState<PopularProductWidget> {
     final products = ref.watch(productProvider);
     return SizedBox(
       height: 250,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            final product = products[index];
-            return ProductItemWidget(
-              product: product,
-            );
-          }),
+      child: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ),
+            )
+          : ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return ProductItemWidget(
+                  product: product,
+                );
+              },
+            ),
     );
   }
 }
