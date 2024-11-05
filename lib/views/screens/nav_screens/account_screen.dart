@@ -60,7 +60,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: () async {
-                  await _authController.signOutUSer(context: context);
+                  await _authController.signOutUser(context: context, ref:ref);
                 },
                 child: Text(
                   "Logout",
