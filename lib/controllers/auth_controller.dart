@@ -5,15 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mac_store_app/global_variable.dart';
 import 'package:mac_store_app/models/user.dart';
 import 'package:http/http.dart' as http;
+import 'package:mac_store_app/provider/delivered_order_count_provider.dart';
 import 'package:mac_store_app/provider/user_provider.dart';
 import 'package:mac_store_app/services/manage_http_response.dart';
 import 'package:mac_store_app/views/screens/authentication/login_screen.dart';
 import 'package:mac_store_app/views/screens/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class AuthController {
   Future<void> signUpUsers(
-      {required context,
+      {required BuildContext context,
       required String fullName,
       required String email,
       required String password}) async {
@@ -101,33 +103,38 @@ class AuthController {
 
   //Signout
 
-  Future<void> signOutUser(
-      {required BuildContext context, required WidgetRef ref}) async {
+  Future<void> signOutUSer({required BuildContext context, required WidgetRef ref}) async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
+      //clear the token and user from SharedPreferenace
       await preferences.remove('auth_token');
       await preferences.remove('user');
-
+      //clear the user state
       ref.read(userProvider.notifier).signOut();
+      ref.read(deliveredOrderCountProvider.notifier).resetCount();
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-        (route) => false,
-      );
-      showSnackBar(context, 'Signed out successfully');
+      //navigate the user back to the login screen
+
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return const LoginScreen();
+      }), (route) => false);
+
+      showSnackBar(context, 'signout successfully');
     } catch (e) {
-      showSnackBar(context, "Error signing out");
+      showSnackBar(context, "error signing out");
     }
   }
 
   //Update user's state, city and locality
-  Future<void> updateUserLocation(
-      {required context,
-      required String id,
-      required String state,
-      required String city,
-      required String locality, required WidgetRef ref}) async {
+  Future<void> updateUserLocation({
+    required BuildContext context,
+    required String id,
+    required String state,
+    required String city,
+    required String locality,
+    required WidgetRef ref,
+  }) async {
     try {
       //Make an HTTP PUT request to update user's state, city and locality
       final http.Response response = await http.put(
@@ -161,7 +168,7 @@ class AuthController {
 
             //update the application state with the updated user data  using Riverpod
             //this ensures the app reflects the most recent user data
-             ref.read(userProvider.notifier).setUser(userJson);
+            ref.read(userProvider.notifier).setUser(userJson);
 
             //store the updated user data in shared preference  for future user
             //this allows the app to retrive the user data  even after the app restarts
