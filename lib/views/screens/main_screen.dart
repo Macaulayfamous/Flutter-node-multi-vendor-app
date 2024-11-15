@@ -13,8 +13,8 @@ class MainScreen extends ConsumerStatefulWidget {
 }
 
 class _MainScreenState extends ConsumerState<MainScreen> {
-  int _pageIndex = 0;
-  final List<Widget> _pages = [
+    int _pageIndex = 0;
+    final List<Widget> _pages = [
     const HomeScreen(),
     const FavoriteScreen(),
     const CategoryScreen(),
